@@ -1,0 +1,21 @@
+{
+  "name": "maya-asr-chatbot",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Chatbot ASR para lengua maya yucateca — SECIHTI 2025",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@gradio/client": "^1.7.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.10"
+  }
+}

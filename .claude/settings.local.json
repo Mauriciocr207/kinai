@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://mau-cr-asr-maya-yucateco.hf.space/\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://mau-cr-asr-maya-yucateco.hf.space/config\")"
+    ]
+  }
+}
