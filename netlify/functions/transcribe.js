@@ -6,7 +6,7 @@ import { Client } from "@gradio/client";
 // hf.space responde "*", que el navegador rechaza con credenciales. Este proxy
 // resuelve eso: el navegador habla con esta función (mismo origen → sin CORS) y
 // la función llama al Space server-to-server con el token guardado en Netlify.
-const SPACE_ID = process.env.HF_SPACE;
+const SPACE_ID = "mau-cr/asr-maya-yucateco";
 
 // Token server-side, NUNCA en el navegador. Da la cuota de ZeroGPU. Sin él, las
 // peticiones son anónimas y caen en la cuota compartida por IP (se agota rápido).
