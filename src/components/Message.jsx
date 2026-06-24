@@ -1,7 +1,7 @@
 import { renderInline } from "../utils/renderInline";
 
 const BUBBLE_BASE =
-  "px-[15px] py-[11px] leading-[1.75] text-[15px] whitespace-pre-wrap [&_strong]:font-semibold [&_em]:italic [&_code]:font-mono [&_code]:text-[0.9em] [&_code]:px-[5px] [&_code]:py-px [&_code]:rounded [&_code]:bg-[rgba(0,0,0,0.3)] [&_code]:border [&_code]:border-[rgba(120,140,70,0.25)] [&_code]:text-[#C9D8A0]";
+  "px-[15px] py-[11px] leading-[1.75] text-[20px] whitespace-pre-wrap [&_strong]:font-semibold [&_em]:italic [&_code]:font-mono [&_code]:text-[0.9em] [&_code]:px-[5px] [&_code]:py-px [&_code]:rounded [&_code]:bg-[rgba(0,0,0,0.3)] [&_code]:border [&_code]:border-[rgba(120,140,70,0.25)] [&_code]:text-[#C9D8A0]";
 
 const BUBBLE_ASSISTANT =
   "bg-[rgba(16,30,14,0.75)] border border-[rgba(90,130,50,0.28)] border-l-[3px] border-l-[rgba(145,105,28,0.55)] rounded-[3px_12px_12px_12px] text-[#E0D4A4] [&_strong]:text-[#E8C45A]";

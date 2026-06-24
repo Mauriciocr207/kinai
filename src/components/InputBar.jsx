@@ -43,7 +43,7 @@ export default function InputBar({
         </button>
 
         <textarea
-          className="flex-1 bg-[rgba(16,28,12,0.8)] border border-[rgba(70,100,38,0.4)] rounded-lg px-3.5 py-2.5 text-maya-text font-body text-[15px] resize-none min-h-[44px] max-h-[120px] outline-none transition-[border-color] duration-200 focus:border-[rgba(145,105,28,0.6)] placeholder:text-[#445534]"
+          className="flex-1 bg-[rgba(16,28,12,0.8)] border border-[rgba(70,100,38,0.4)] rounded-lg px-3.5 py-2.5 text-maya-text font-body text-[17px] resize-none min-h-[44px] max-h-[120px] outline-none transition-[border-color] duration-200 focus:border-[rgba(145,105,28,0.6)] placeholder:text-[#445534]"
           value={inputText}
           onChange={onInputChange}
           onKeyDown={onKeyDown}

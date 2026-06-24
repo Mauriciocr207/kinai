@@ -122,7 +122,7 @@ export default function App() {
     : "MMS-1B fine-tuneado";
 
   return (
-    <div className="min-h-screen flex flex-col bg-maya-bg maya-bg-gradient font-body text-maya-text">
+    <div className="demo-root min-h-screen flex flex-col bg-maya-bg maya-bg-gradient font-body text-maya-text">
       <Header />
 
       <MessageList

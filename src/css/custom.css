@@ -1,0 +1,196 @@
+/**
+ * CSS global de Docusaurus (Infima) + Tailwind v4 para el demo.
+ *
+ * Tailwind se importa SIN su preflight global para no resetear el tema de la
+ * documentación (Infima). El reset que necesita el demo se aplica abajo,
+ * acotado a `.demo-root`.
+ */
+
+@layer theme, base, components, utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* Solo escanear el código del demo (src/) en busca de clases utilitarias. */
+@source '../**/*.{js,jsx,ts,tsx}';
+
+/* ── Tokens del tema maya (alimentan las utilidades de Tailwind) ── */
+@theme {
+  --font-body: 'Crimson Pro', Georgia, serif;
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'SFMono-Regular', Consolas, monospace;
+
+  --color-maya-bg: #16291b;
+  --color-maya-text: #e6dbae;
+  --color-maya-gold: #d4b048;
+  --color-maya-green: #9ccb6a;
+
+  --animate-fade-up: fadeUp 0.28s ease;
+  --animate-dot: dotBounce 1.1s infinite;
+  --animate-tr-pulse: trPulse 1.2s ease-in-out infinite;
+  --animate-tr-dot: trDot 1.1s infinite;
+  --animate-rec-pulse: recPulse 1.4s infinite;
+  --animate-wbar: wbAnim 0.45s infinite alternate;
+}
+
+@utility maya-bg-gradient {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 15% 40%, rgba(58, 102, 34, 0.26) 0%, transparent 72%),
+    radial-gradient(ellipse 55% 45% at 85% 18%, rgba(150, 100, 28, 0.20) 0%, transparent 62%);
+}
+
+/* ── Reset acotado al demo (sustituye al preflight global de Tailwind) ── */
+@layer base {
+  .demo-root,
+  .demo-root *,
+  .demo-root *::before,
+  .demo-root *::after {
+    box-sizing: border-box;
+  }
+  .demo-root * {
+    margin: 0;
+  }
+  .demo-root button,
+  .demo-root input,
+  .demo-root textarea {
+    font: inherit;
+    color: inherit;
+  }
+  .demo-root button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .demo-root {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Tema de la documentación (Infima) con la paleta maya del demo.
+   - Modo claro: "pergamino" maya (fondo crema, texto verde profundo).
+   - Modo oscuro: look del demo (verde #16291b, texto crema, acentos oro).
+   - Navbar siempre verde oscuro con título dorado, como el Header del demo.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Modo claro: pergamino maya ── */
+:root {
+  --ifm-color-primary: #4e7d2a;
+  --ifm-color-primary-dark: #467025;
+  --ifm-color-primary-darker: #426a23;
+  --ifm-color-primary-darkest: #36571d;
+  --ifm-color-primary-light: #57892f;
+  --ifm-color-primary-lighter: #5d9133;
+  --ifm-color-primary-lightest: #6fa544;
+  --ifm-code-font-size: 95%;
+  /* Altura del Header (reemplaza la navbar): alinea el sidebar/TOC y las anclas. */
+  --ifm-navbar-height: 68px;
+
+  --ifm-background-color: #f6efd9;
+  --ifm-background-surface-color: #efe6c8;
+  --ifm-font-color-base: #26302a;
+  --ifm-heading-color: #16291b;
+  --ifm-color-content: #26302a;
+  --ifm-color-content-secondary: #5a6b50;
+
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ifm-heading-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --ifm-navbar-background-color: #16291b;
+  --ifm-navbar-link-color: #e6dbae;
+  --ifm-navbar-link-hover-color: #d4b048;
+  --ifm-footer-background-color: #112016;
+
+  --ifm-menu-color: #2c3a30;
+  --ifm-menu-color-active: var(--ifm-color-primary);
+  --ifm-menu-color-background-active: rgba(78, 125, 42, 0.12);
+  --ifm-toc-border-color: rgba(120, 95, 30, 0.25);
+  --ifm-table-border-color: rgba(120, 95, 30, 0.20);
+  --ifm-code-background: rgba(20, 38, 24, 0.07);
+  --ifm-blockquote-color: #4d5a44;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* ── Modo oscuro: look del demo ── */
+[data-theme='dark'] {
+  --ifm-color-primary: #d4b048;
+  --ifm-color-primary-dark: #cba636;
+  --ifm-color-primary-darker: #c19f30;
+  --ifm-color-primary-darkest: #9e8228;
+  --ifm-color-primary-light: #d9b95e;
+  --ifm-color-primary-lighter: #ddc06c;
+  --ifm-color-primary-lightest: #e6ce8c;
+
+  --ifm-background-color: #16291b;
+  --ifm-background-surface-color: #1d3424;
+  --ifm-font-color-base: #e6dbae;
+  --ifm-heading-color: #efe6bf;
+  --ifm-color-content: #e6dbae;
+  --ifm-color-content-secondary: #b9b487;
+
+  --ifm-navbar-background-color: rgba(20, 38, 24, 0.92);
+  --ifm-navbar-link-color: #e6dbae;
+  --ifm-navbar-link-hover-color: #d4b048;
+  --ifm-footer-background-color: #112016;
+
+  --ifm-menu-color: #c9c19a;
+  --ifm-menu-color-active: #d4b048;
+  --ifm-menu-color-background-active: rgba(170, 140, 40, 0.14);
+  --ifm-toc-border-color: rgba(150, 110, 34, 0.26);
+  --ifm-table-border-color: rgba(150, 110, 34, 0.22);
+  --ifm-code-background: rgba(0, 0, 0, 0.30);
+  --ifm-blockquote-color: #c4bb8e;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Fondo con gradiente sutil del demo, solo en oscuro (no estorba la lectura). */
+[data-theme='dark'] body {
+  background-image:
+    radial-gradient(ellipse 60% 45% at 12% 8%, rgba(58, 102, 34, 0.16) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 40% at 88% 0%, rgba(150, 100, 28, 0.10) 0%, transparent 62%);
+  background-attachment: fixed;
+}
+
+/* La navbar de Docusaurus envuelve nuestro <Header/> (src/theme/Navbar) y solo
+   existe para que Docusaurus pueda medir su altura (resaltado del TOC). La
+   dejamos transparente y sin caja para que el Header aporte todo el estilo;
+   `navbar--fixed-top` da el sticky y el Header (w-full) la llena por completo. */
+.navbar {
+  display: block;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* ── Keyframes del demo ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dotBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+  30% { transform: translateY(-7px); opacity: 1; }
+}
+@keyframes trPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+@keyframes trDot {
+  0%, 60%, 100% { opacity: 0.3; }
+  30% { opacity: 1; }
+}
+@keyframes recPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(210, 60, 40, 0.4); }
+  50% { box-shadow: 0 0 0 7px rgba(210, 60, 40, 0); }
+}
+@keyframes wbAnim {
+  from { transform: scaleY(0.3); }
+  to { transform: scaleY(1.2); }
+}
