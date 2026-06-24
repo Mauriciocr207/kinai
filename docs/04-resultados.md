@@ -80,7 +80,8 @@ permanece lejos del desempeño en lenguas con grandes corpus: la **fonología de
 alcanzable. Las principales limitaciones son el **desbalance de género** y la **concentración del
 material** narrativo en pocos hablantes.
 
-:::note Pruébalo
+:::note 
+Pruébalo
 El modelo está disponible en
 [Hugging Face](https://huggingface.co/spaces/mau-cr/asr-maya-yucateco) y en el
 **[demo KINAI](/)**.
