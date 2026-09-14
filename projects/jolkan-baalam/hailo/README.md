@@ -1,6 +1,8 @@
-# Compilación del ASR maya para Hailo-10H
+# Ejecución del ASR de Jolkan-Baalam en Hailo-10H
 
-Esta carpeta contiene las notebooks y experimentos para evaluar la ejecución del modelo ASR maya `mau-cr/mayan_best_model` en una Raspberry Pi 5 con Hailo-10H.
+Esta carpeta contiene las notebooks y experimentos de la etapa Hailo del prototipo
+Jolkan-Baalam. Evalúa la ejecución del modelo ASR maya `mau-cr/mayan_best_model` en
+una Raspberry Pi 5 con Hailo-10H; no representa por sí sola al asistente completo.
 
 ## Objetivo
 

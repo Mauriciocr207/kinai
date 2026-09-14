@@ -47,7 +47,7 @@ El proyecto nace de una tesis sobre reconocimiento automático del habla, pero s
 | 🔊 TTS maya yucateco | Modelo publicado; integración en validación | [`docs/models/tts.md`](docs/models/tts.md) |
 | 📊 Análisis lingüístico y acústico | Activo | [`projects/analysis`](projects/analysis/README.md) |
 | 💬 Aplicación chatbot | Prototipo funcional | [`apps/chatbot`](apps/chatbot/README.md) |
-| ⚡ Inferencia en edge/Hailo | Experimental | [`projects/hailo`](projects/hailo/README.md) |
+| ⚡ Jolkan-Baalam: inferencia edge/Hailo | Experimental | [`projects/jolkan-baalam`](projects/jolkan-baalam/README.md) |
 | 🗃️ Pipeline Kaldi | Archivado | [`projects/legacy/kaldi_asr`](projects/legacy/kaldi_asr/README.md) |
 
 ## 🗺️ Explorar el laboratorio

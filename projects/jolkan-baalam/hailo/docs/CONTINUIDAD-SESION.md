@@ -2,7 +2,8 @@
 
 **Fecha de corte:** 2026-09-13  
 **Repositorio:** `thesis-mayan-ai`  
-**Subproyecto:** `projects/hailo/`
+**Prototipo:** `projects/jolkan-baalam/`  
+**Subproyecto:** `projects/jolkan-baalam/hailo/`
 
 ## Objetivo
 
@@ -74,8 +75,8 @@ No iniciar cuantización, HEF ni cambios de drivers de la Pi hasta obtener un gr
 
 ## Archivos de este subproyecto
 
-- `README.md`: proceso técnico detallado ONNX → HAR → HEF.
-- `docs/CONTINUIDAD-SESION.md`: estado exacto y siguiente paso.
-- `docs/posible-migracion-a-formato-agentico.md`: propuesta para organizar el repositorio para agentes.
-- `AGENTS.md`: reglas operativas del área Hailo.
-- `tools/conv1d_to_conv2d_colab_cell.py`: transformación candidata para copiar a Colab.
+- `hailo/README.md`: proceso técnico detallado ONNX → HAR → HEF.
+- `hailo/docs/CONTINUIDAD-SESION.md`: estado exacto y siguiente paso.
+- `hailo/docs/posible-migracion-a-formato-agentico.md`: antecedente de organización.
+- `hailo/AGENTS.md`: reglas operativas del área Hailo.
+- `hailo/tools/conv1d_to_conv2d_colab_cell.py`: transformación candidata para copiar a Colab.
