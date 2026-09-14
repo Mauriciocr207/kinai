@@ -1,7 +1,7 @@
 [project]
-name = "thesis-mayan-ai"
+name = "kinai"
 version = "0.1.0"
-description = "ASR para maya yucateco: corpus, análisis y fine-tuning de MMS-1b-all"
+description = "KINAI: laboratorio para tecnología de voz y un asistente en maya yucateco"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
