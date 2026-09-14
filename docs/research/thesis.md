@@ -38,7 +38,7 @@ yucateco para un ASR usable?
 | 📊 **Modelos por punto de curva** | `mau-cr/mms-maya-020min` … [`mau-cr/mms-maya-240min`](https://huggingface.co/mau-cr/mms-maya-240min) |
 | 📈 **Resultados de scaling** | [`mau-cr/mms_yua_results`](https://huggingface.co/datasets/mau-cr/mms_yua_results) |
 | 🎥 **Video de la demostración** | [youtube.com/watch?v=3JNS1Rq7eg0](https://www.youtube.com/watch?v=3JNS1Rq7eg0) |
-| 💻 **Repositorio** | [github.com/Mauriciocr207/thesis-mayan-ai](https://github.com/Mauriciocr207/thesis-mayan-ai) |
+| 💻 **Repositorio** | [github.com/Mauriciocr207/kinai](https://github.com/Mauriciocr207/kinai) |
 
 > 🔒 **El corpus está privado por el momento.** Los modelos, los resultados, la demo y el
 > chatbot son públicos, pero para descargar [`mau-cr/mayan-voice`](https://huggingface.co/datasets/mau-cr/mayan-voice)
