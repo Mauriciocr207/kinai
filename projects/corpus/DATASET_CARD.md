@@ -52,7 +52,7 @@ El modelo entrenado con este corpus sí es público y se puede probar sin pedir 
 - 🤗 **[`mau-cr/mayan_best_model`](https://huggingface.co/mau-cr/mayan_best_model)** — los
   pesos (MMS-1b-all ajustado con adapters, 240 min + LM de 3 gramas).
 - 🎥 **[Video de la demostración](https://www.youtube.com/watch?v=3JNS1Rq7eg0)**
-- 💻 **[Repositorio de la tesis](https://github.com/Mauriciocr207/thesis-mayan-ai)**
+- 💻 **[Repositorio de la tesis](https://github.com/Mauriciocr207/kinai)**
 
 ## Composición
 
@@ -199,4 +199,4 @@ Para **solicitar acceso al corpus** o cualquier duda sobre el dataset:
 - Autor: Mauricio Carrillo Romero
 - Email: enrique.mauricio.carrillo.romero@gmail.com
 - Hugging Face: <https://huggingface.co/mau-cr>
-- Repositorio: <https://github.com/Mauriciocr207/thesis-mayan-ai>
+- Repositorio: <https://github.com/Mauriciocr207/kinai>

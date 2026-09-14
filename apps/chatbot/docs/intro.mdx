@@ -1,0 +1,60 @@
+---
+id: introduccion-proyecto
+title: ASR para el Maya Yucateco
+sidebar_label: Inicio
+sidebar_position: 1
+slug: /
+description: Corpus de audio y reconocimiento de voz (ASR) para la lengua maya yucateca (Maayat'aan).
+keywords: [maya yucateco, ASR, corpus, MMS, preservación lingüística, KINAI]
+---
+
+# Corpus de audio y ASR para el Maya Yucateco
+
+**Desarrollo de un corpus de audio en lengua maya (Maayat'aan) para la implementación de modelos de Inteligencia Artificial orientados a la preservación lingüística.**
+
+Por **Enrique Mauricio Carrillo Romero** — Facultad de Ingeniería, Universidad Autónoma de Yucatán (2026).
+
+:::tip
+Demo en vivo
+Esta documentación acompaña a **[KINAI](/)**, un asistente conversacional que escucha y transcribe maya yucateco usando el modelo entrenado en este trabajo.
+:::
+
+## Resumen
+
+El **Maya Yucateco (Maayat'aan)** es la lengua indígena más hablada de México, pero enfrenta una
+brecha tecnológica: faltan **corpus públicos** de audio con su transcripción para entrenar modelos
+modernos de **Reconocimiento Automático del Habla (ASR)**.
+
+Este trabajo aborda esa carencia construyendo un corpus de **≈ 4 horas** de audio recopilado de
+fuentes libres, organizado en dos subcorpus complementarios. Sobre ese material se realizó un
+análisis **estadístico, léxico y acústico** (ley de Zipf, cadenas de Markov, espacio vocálico) y se
+evaluó su utilidad mediante el **ajuste fino del modelo multilingüe `mms-1b-all`**.
+
+## Resultados en una línea
+
+| Métrica | Valor |
+|---|---|
+| Audio del corpus | **4 h 21 min** · 32 hablantes · 2,535 enunciados |
+| Vocabulario | 34,154 palabras · 5,802 únicas |
+| WER (240 min de audio, sin LM) | **≈ 40 %** |
+| WER (con modelo de lenguaje de 3-gramas) | **≈ 17 %** |
+| Ganancia del LM | hasta **30 puntos** porcentuales |
+
+> Un corpus modesto pero **bien curado** puede contribuir significativamente a la preservación
+> digital del maya yucateco.
+
+## Cómo leer esta documentación
+
+1. **[Introducción](./00-introduccion.md)** — el problema, la hipótesis y los objetivos.
+2. **[Antecedentes](./01-antecedentes.md)** — estado del arte en ASR de bajos recursos y panorama del maya.
+3. **[Marco teórico](./02-marco-teorico.md)** — del sonido y la fonética al aprendizaje profundo y el ASR.
+4. **[Metodología](./03-metodologia.md)** — cómo se construyó, analizó y entrenó el corpus.
+5. **[Resultados](./04-resultados.md)** — estadísticas, análisis y desempeño del modelo.
+6. **[Conclusiones](./05-conclusiones.md)** y **[Anexos](./06-anexos.md)**.
+
+## Recursos del proyecto
+
+- 🎤 **Demo (KINAI):** [asistente conversacional en maya](/)
+- 🤗 **Modelo ASR:** [huggingface.co/spaces/mau-cr/asr-maya-yucateco](https://huggingface.co/spaces/mau-cr/asr-maya-yucateco)
+- 📦 **Corpus:** [huggingface.co/datasets/mau-cr/mayan-voice](https://huggingface.co/datasets/mau-cr/mayan-voice)
+- 💻 **Código:** [github.com/Mauriciocr207/kinai](https://github.com/Mauriciocr207/kinai)

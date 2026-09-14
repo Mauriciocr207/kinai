@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# `netlify dev`: levanta el dev server de Docusaurus + las Functions + este redirect.
+[dev]
+  command = "npm run start"
+  targetPort = 3000
+  framework = "#custom"
+
+# Proxy de las Netlify Functions (mismo origen → sin CORS). Las keys viven en el server.
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

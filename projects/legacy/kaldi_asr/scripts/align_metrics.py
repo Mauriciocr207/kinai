@@ -1,9 +1,9 @@
 """Resume métricas del alignment de Kaldi (steps/align_si.sh).
 
 Uso:
-    python projects/kaldi_asr/scripts/align_metrics.py <iter_id>
-    python projects/kaldi_asr/scripts/align_metrics.py 02
-    python projects/kaldi_asr/scripts/align_metrics.py <ruta a exp/ali>
+    python projects/legacy/kaldi_asr/scripts/align_metrics.py <iter_id>
+    python projects/legacy/kaldi_asr/scripts/align_metrics.py 02
+    python projects/legacy/kaldi_asr/scripts/align_metrics.py <ruta a exp/ali>
 """
 import re
 import sys

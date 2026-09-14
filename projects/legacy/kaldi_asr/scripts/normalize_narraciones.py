@@ -7,7 +7,7 @@ párrafos) y devuelve un `.tsv` con columnas `speaker\ttext` por utterance.
 Salida: `data/work/narraciones_clean_text/<base>.tsv`
 
 Uso:
-    python projects/kaldi_asr/scripts/normalize_narraciones.py
+    python projects/legacy/kaldi_asr/scripts/normalize_narraciones.py
 """
 
 from __future__ import annotations

@@ -1,7 +1,7 @@
 """Añade padding en segundos a los segmentos de un source_segments.json.
 
 Uso:
-    python projects/kaldi_asr/scripts/pad_segments.py <path> [pad_sec]
+    python projects/legacy/kaldi_asr/scripts/pad_segments.py <path> [pad_sec]
 
 Escribe un `.bak` junto al archivo original antes de reescribir.
 """

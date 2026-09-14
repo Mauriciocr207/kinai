@@ -13,7 +13,7 @@ tools/kaldi/
 tools/kenlm/
 
 # --- material académico (no forma parte del código) ---
-research/
+/research/
 
 # --- speech-collector ---
 projects/speech-collector/node_modules/
