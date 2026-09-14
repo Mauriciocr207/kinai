@@ -111,6 +111,8 @@ Los agentes no modifican directamente `main`. El agente maestro revisa cambios, 
 
 Lee [`AGENTS.md`](AGENTS.md) antes de trabajar en el repositorio.
 
+Consulta la [guía práctica para usar herramientas agenticas](docs/development/using-agentic-tools.md) para instalar una herramienta, trabajar en una rama y abrir un PR.
+
 ## 🔒 Datos y responsabilidad
 
 El foco actual es el maya yucateco (`yua`). El corpus permanece restringido por ahora. Que un archivo exista localmente, en Google Drive o en Hugging Face no implica autorización para redistribuirlo.
