@@ -12,7 +12,8 @@
 
 ## Experimental
 
-- Ejecución del ASR en Hailo: `projects/hailo/`.
+- Prototipo de asistente Jolkan-Baalam y ejecución del ASR en Hailo:
+  `projects/jolkan-baalam/`.
 - Uso del modelo TTS publicado dentro de una aplicación integrada.
 - Extracción de paquetes reutilizables desde `projects/mayanlab` y `projects/ytclip`.
 
