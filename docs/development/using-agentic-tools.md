@@ -35,6 +35,38 @@ Antes del PR ejecuta `git status`, `git diff --check` y `git diff --stat`. Segú
 
 No descargues modelos grandes ni el corpus privado para una validación que no lo necesita. No ejecutes notebooks que puedan modificar Drive o publicar artefactos sin revisar antes sus celdas.
 
+## Herramientas y proveedores
+
+Todas estas opciones pueden trabajar con KINAI, pero cumplen funciones distintas. Elige una herramienta de trabajo, abre la raíz del repositorio y aplica el mismo flujo de rama, validación y PR.
+
+### Orca: orquestación multi-proveedor
+
+[Orca](https://github.com/stablyai/orca) permite trabajar con una flota de agentes de código y distintos proveedores desde un mismo entorno. Es útil para repartir tareas entre agentes o coordinar sesiones paralelas. Consulta su [repositorio e instrucciones de instalación](https://github.com/stablyai/orca).
+
+No compartas con Orca acceso al corpus privado salvo que entiendas dónde se ejecutan los agentes y qué permisos tienen.
+
+### Claude Code: agente de Anthropic
+
+[Claude Code](https://www.anthropic.com/claude-code) es el agente de programación de Anthropic. Consulta la [guía oficial de instalación](https://code.claude.com/docs/en/quickstart) y la documentación de [configuración con GitHub](https://code.claude.com/docs/en/github-actions).
+
+Ábrelo desde la raíz de KINAI y pídele que lea `README.md` y `AGENTS.md` antes de trabajar.
+
+### Codex CLI: agente de OpenAI
+
+[Codex CLI](https://github.com/openai/codex) es el agente de programación local de OpenAI. Consulta la [guía oficial de inicio](https://help.openai.com/en/articles/11096431) para instalarlo y utilizarlo desde la terminal.
+
+Úsalo desde la raíz del repositorio, con una rama propia y las instrucciones de KINAI como contexto.
+
+### Anthropic: proveedor de modelos
+
+[Anthropic](https://www.anthropic.com/) es un proveedor de modelos, no una herramienta de control de versiones ni una instalación local equivalente a Orca, Claude Code o Codex. Para utilizar sus modelos necesitas una cuenta y una API key en la [consola de Anthropic](https://console.anthropic.com/); consulta también la documentación oficial de la [API](https://docs.anthropic.com/).
+
+Las claves deben vivir en el gestor de secretos de la herramienta o del servidor. Nunca las guardes en KINAI, `localStorage`, un prompt compartido o un PR.
+
+### Otras herramientas
+
+También puedes utilizar Cursor, GitHub Copilot, OpenCode, Aider u otra herramienta compatible. Busca su documentación oficial de instalación y configura el repositorio para que lea `AGENTS.md`.
+
 ## Abrir el Pull Request
 
 Guarda cambios con un commit descriptivo, súbelos con `git push -u origin <rama>` y abre el PR desde GitHub o con `gh pr create --base main --head <rama>`. Completa la [plantilla de PR](../../.github/PULL_REQUEST_TEMPLATE.md) con objetivo, cambios, pruebas, riesgos, impacto en datos y procedencia.
@@ -63,4 +95,3 @@ Que un archivo exista en Google Drive no implica permiso para copiarlo a Git o p
 - [ ] Documenté fuentes, limitaciones y accesos externos.
 - [ ] Abrí un PR dirigido a `main`.
 - [ ] Esperé la revisión del agente maestro.
-

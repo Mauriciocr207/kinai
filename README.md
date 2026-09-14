@@ -60,7 +60,6 @@ El proyecto nace de una tesis sobre reconocimiento automático del habla, pero s
 - [🗄️ Almacenamiento y Google Drive](docs/storage.md)
 - [📚 Tesis e investigación de origen](docs/research/thesis.md)
 - [🤖 Trabajo con agentes](docs/development/working-with-agents.md)
-- [🛠️ Cómo usar herramientas agenticas](docs/development/using-agentic-tools.md)
 - [🤝 Guía para contribuir](CONTRIBUTING.md)
 
 ## ⚙️ Instalación rápida
@@ -110,6 +109,8 @@ agente trabajador → rama → Pull Request → CI → agente maestro → main
 Los agentes no modifican directamente `main`. El agente maestro revisa cambios, validaciones, documentación y riesgos; los cambios sobre datos, licencias, privacidad, publicaciones o resultados científicos requieren revisión humana.
 
 Lee [`AGENTS.md`](AGENTS.md) antes de trabajar en el repositorio.
+
+Consulta la [guía práctica para usar herramientas agenticas](docs/development/using-agentic-tools.md) para instalar una herramienta, trabajar en una rama y abrir un PR.
 
 ## 🔒 Datos y responsabilidad
 
