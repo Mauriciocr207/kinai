@@ -16,7 +16,7 @@ keywords: [anexos, IPA, recursos, datasets, bibliografía]
 | 🎤 Demo conversacional (KINAI) | [Abrir demo](/) |
 | 🤗 Modelo ASR (Hugging Face Space) | [asr-maya-yucateco](https://huggingface.co/spaces/mau-cr/asr-maya-yucateco) |
 | 📦 Corpus de audio (dataset) | [mau-cr/mayan-voice](https://huggingface.co/datasets/mau-cr/mayan-voice) |
-| 💻 Código y pipeline | [github.com/Mauriciocr207/thesis-mayan-ai](https://github.com/Mauriciocr207/thesis-mayan-ai) |
+| 💻 Código y pipeline | [github.com/Mauriciocr207/kinai](https://github.com/Mauriciocr207/kinai) |
 
 ## Alfabeto Fonético Internacional (IPA)
 
