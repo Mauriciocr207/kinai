@@ -2,7 +2,7 @@
 
 <img src="apps/chatbot/static/logo_kinai.png" alt="Logo de Kinai" width="180">
 
-# Kinai
+# KINAI
 
 ### Tecnología de voz para el maya yucateco
 
