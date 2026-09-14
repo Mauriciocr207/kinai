@@ -60,7 +60,6 @@ El proyecto nace de una tesis sobre reconocimiento automático del habla, pero s
 - [🗄️ Almacenamiento y Google Drive](docs/storage.md)
 - [📚 Tesis e investigación de origen](docs/research/thesis.md)
 - [🤖 Trabajo con agentes](docs/development/working-with-agents.md)
-- [🛠️ Cómo usar herramientas agenticas](docs/development/using-agentic-tools.md)
 - [🤝 Guía para contribuir](CONTRIBUTING.md)
 
 ## ⚙️ Instalación rápida
