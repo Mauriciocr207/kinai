@@ -122,5 +122,4 @@ La documentación de la tesis que originó KINAI se conserva en [`docs/research/
 
 ## 🌞 Nombre
 
-**Kinai** combina la identidad del asistente original con la idea de construir tecnología de voz para el maya yucateco. La plataforma es el laboratorio; el asistente de voz es el horizonte.
-
+**Kinai** nace de la unión de *K’iin* —día y sol en maya yucateco— con **AI**, inteligencia artificial. El nombre representa el propósito de poner la inteligencia artificial al servicio de la tecnología de voz en maya yucateco. La plataforma es el laboratorio; el asistente de voz es el horizonte.
