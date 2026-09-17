@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Última revisión: 2026-09-13.
+Última revisión: 2026-09-16.
 
 ## Activo
 
@@ -12,10 +12,9 @@
 
 ## Experimental
 
-- Prototipo de asistente Jolkan-Baalam y ejecución del ASR en Hailo:
-  `projects/jolkan-baalam/`.
+- Prototipo de asistente Jolkan-Baalam y ejecución del ASR en Hailo: `projects/jolkan-baalam/`.
+- El frontend Conv2D, la convolución posicional con pesos estáticos y el Transformer 0 completo pasan el parser de Hailo-10H; aún no hay HEF ni inferencia en Raspberry Pi.
 - Uso del modelo TTS publicado dentro de una aplicación integrada.
-- Extracción de paquetes reutilizables desde `projects/mayanlab` y `projects/ytclip`.
 
 ## Archivado
 
@@ -23,9 +22,11 @@
 
 ## Pendiente
 
+- Validar numéricamente el Transformer 0 completo y extender la prueba a más bloques.
+- Ejecutar calibración, cuantización y generar un HEF funcional.
+- Comprobar HailoRT, latencia y RTF en Raspberry Pi.
 - Auditar el inventario real de Google Drive.
 - Resolver el estado de las grabaciones propias y sus permisos.
 - Completar ejemplos ASR/TTS ejecutables.
 - Establecer CI y protección de `main` en GitHub.
-- Definir licencia del código y condiciones particulares de datos/modelos.
-
+- Definir licencia del código y condiciones particulares de datos y modelos.
