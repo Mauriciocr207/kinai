@@ -19,6 +19,7 @@ La compilación se realiza en x86_64/Google Colab. La Raspberry Pi se incorporar
 - Notebook documental: [`notebooks/compile_mayan_asr_hailo_documentacion.ipynb`](notebooks/compile_mayan_asr_hailo_documentacion.ipynb).
 - Guía para leer y continuar el registro: [`docs/guia-notebook-onnx-a-hef.md`](docs/guia-notebook-onnx-a-hef.md).
 - Plan acotado para obtener el primer HEF: [`docs/plan-ejecucion-hef-2026-09-18.md`](docs/plan-ejecucion-hef-2026-09-18.md).
+- Registro de la continuidad reproducible y la notebook de Drive: [`docs/SESION-2026-09-18-continudad-reproducible.md`](docs/SESION-2026-09-18-continudad-reproducible.md).
 
 ## Estado actual — 2026-09-18
 
