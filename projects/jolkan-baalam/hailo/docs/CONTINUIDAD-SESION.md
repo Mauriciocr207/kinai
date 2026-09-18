@@ -1,82 +1,94 @@
 # Continuidad de sesión: ASR maya en Hailo-10H
 
-**Fecha de corte:** 2026-09-13  
-**Repositorio:** `thesis-mayan-ai`  
-**Prototipo:** `projects/jolkan-baalam/`  
-**Subproyecto:** `projects/jolkan-baalam/hailo/`
+**Última actualización:** 2026-09-18
+**Modelo:** `mau-cr/mayan_best_model`
+**Hardware objetivo:** Hailo-10H en Raspberry Pi 5
 
 ## Objetivo
 
-Integrar el pipeline `audio → ASR → texto → LLM → texto → TTS → audio` para maya yucateco usando `mau-cr/mayan_best_model` y `mau-cr/mms-tts-yua-6voces`. La prioridad actual es evaluar si el ASR MMS-1B puede compilarse para Hailo-10H.
+Evaluar si el ASR MMS adaptado a maya yucateco puede dividirse en subgrafos compatibles con Hailo-10H, manteniendo el modelo original como referencia.
 
-## Almacenamiento
+## Entorno y almacenamiento
 
-El ONNX original y sus datos externos están en Drive:
-
-```text
-gdrive:thesis-mayan-ai/models/onnx/mayan_model_repo/onnx/model.onnx
-gdrive:thesis-mayan-ai/models/onnx/mayan_model_repo/onnx/model.onnx_data
-```
-
-La única ruta de Drive autorizada para modificar es `gdrive:thesis-mayan-ai`. El original no se sobrescribe. Candidatos temporales se generan en `/content` y se pierden al desconectar Colab.
-
-## Entorno
-
-El DFC 5.4.0 se instaló en `/content/dfc-env` con Python 3.10.21. Python 3.13 falló por dependencias antiguas (`matplotlib==3.5.2`, `numpy==1.26.4`, etc.). Colab selecciona automáticamente la A100 como GPU 0; la GPU acelera la compilación, pero no corrige incompatibilidades del grafo.
+- DFC 5.4.0 en `/content/dfc-env`, con Python 3.10.21.
+- La compilación se realiza en Google Colab; la Raspberry Pi todavía no participa.
+- El ONNX original y `model.onnx_data` están en `thesis-mayan-ai/models/onnx/mayan_model_repo/onnx/` dentro de Drive.
+- Los candidatos se generan en `/content` y no sustituyen el modelo original.
+- La notebook organizada es `compile_mayan_asr_hailo_organizada.ipynb`.
 
 ## Modelo confirmado
 
-- ONNX IR 8, opset 18.
-- 3906 nodos.
-- Entrada dinámica `[batch, sequence_length]`.
-- Salida `[batch, tiempo, 38]`.
-- 48 bloques Transformer.
-- Siete Conv1D en el feature extractor.
-- Una Conv1D posicional en `encoder/pos_conv_embed`.
+- ONNX IR 8, opset 18 y 3906 nodos.
+- Entrada original: `[batch, sequence_length]`.
+- Salida: `[batch, tiempo, 38]`.
+- Siete convoluciones `Conv1D` en el extractor y una convolución posicional.
+- 48 bloques Transformer con adapter específico de YUA.
+- La prueba usa `[1,64000]`: aproximadamente cuatro segundos a 16 kHz, que producen 199 posiciones del encoder.
 
-## Experimentos confirmados
+## Resultados confirmados
 
-1. El parser original falló en `/wav2vec2/feature_extractor/Unsqueeze` con `KeyError: ONNXGraphNode`.
-2. Ese nodo usa `axis=1` y transforma `[B,T]` en `[B,1,T]`.
-3. Reemplazarlo por un `Reshape` permitió avanzar hasta Conv1D.
-4. Convertir las siete Conv1D del frontend a Conv2D permitió que Hailo aceptara la primera capa y luego el frontend completo.
-5. La convolución posicional requiere `group=16`, kernel temporal 128 y padding `[0,64,0,64]` en Conv2D.
-6. Los pesos posicionales se generan dinámicamente por `weight_norm`; el fuser de Hailo falla al recibirlos como entrada dinámica.
-7. ONNX Runtime confirmó equivalencia de la copia Conv2D:
+1. El parser original falla en `/wav2vec2/feature_extractor/Unsqueeze`.
+2. La conversión `Conv1D → Reshape → Conv2D → Reshape` del extractor fue aceptada por Hailo.
+3. ONNX Runtime confirmó equivalencia del extractor: salida `(1,199,38)`, error máximo aproximado `1.89e-4` y error medio `9.61e-6`.
+4. La convolución posicional usa `group=16`, kernel temporal 128 y padding `[0,64,0,64]` como Conv2D.
+5. Sus pesos `weight_norm` se materializaron como initializer estático. La comparación dinámica/estática produjo error máximo `4.70e-5` y error medio `2.11e-6`.
+6. El extractor Conv2D y el extractor más proyección pasan el parser de forma aislada. La posicional compatible es el bloque histórico sin `Transpose`: entrada y salida `[1,1280,199]`, `Reshape → Conv2D → Reshape3D → Slice → GELU`. También pasa una suma residual aislada con dos entradas de ese layout.
 
-```text
-Original:   (1, 199, 38)
-Candidata:  (1, 199, 38)
-Error máximo: aproximadamente 0.00019–0.00020
-```
+### Encoder y logits CTC
 
-8. El parser aislado de la primera Conv2D y el parser del frontend de siete Conv2D terminaron correctamente.
-9. El parser hasta la convolución posicional todavía falla por los pesos dinámicos. El parser del grafo completo también produjo un ciclo interno de Hailo; no hay nombres ni salidas duplicadas en el ONNX candidato.
-
-## Estado
+Hailo aceptó por separado y después integrado en un único candidato:
 
 ```text
-ONNX original validado                 ✓
-Entorno DFC/Python 3.10                ✓
-Frontend de 7 Conv2D                   ✓ parser Hailo
-Equivalencia numérica                  ✓
-Pesos posicionales estáticos            pendiente
-Parser posicional                      pendiente
-48 bloques Transformer                 pendiente
-HAR / cuantización / HEF               pendiente
-Ejecución en Raspberry Pi              pendiente
+LayerNorm → atención Q/K/V → Softmax y MatMul → out_proj y residual
+→ FFN/GELU y residual → adapter YUA y residual
 ```
 
-## Siguiente paso exacto
+El candidato del Transformer 0 pasó el parser y la equivalencia FP32 exacta.
 
-Materializar una sola vez los pesos calculados por `weight_norm` para la convolución posicional y sustituir su subgrafo dinámico por un initializer estático en una copia temporal. Validar con ONNX Runtime y volver a probar el parser hasta esa capa. Después probar el encoder completo; si falla, ampliar por grupos de bloques Transformer.
+Después, el candidato acumulativo de los 48 Transformers pasó el parser DFC con
+entrada `[1,199,1280]` y salida en
+`/wav2vec2/encoder/layers.47/Add_2`. La traducción tardó aproximadamente 72.57
+segundos.
 
-No iniciar cuantización, HEF ni cambios de drivers de la Pi hasta obtener un grafo traducible.
+El candidato `/content/mayan_encoder48_logits/model.onnx` añade al final:
 
-## Archivos de este subproyecto
+```text
+LayerNormalization final → lm_head/MatMul → lm_head/Add → logits [1,199,38]
+```
 
-- `hailo/README.md`: proceso técnico detallado ONNX → HAR → HEF.
-- `hailo/docs/CONTINUIDAD-SESION.md`: estado exacto y siguiente paso.
-- `hailo/docs/posible-migracion-a-formato-agentico.md`: antecedente de organización.
-- `hailo/AGENTS.md`: reglas operativas del área Hailo.
-- `hailo/tools/conv1d_to_conv2d_colab_cell.py`: transformación candidata para copiar a Colab.
+La validación FP32 del candidato completo desde activaciones hasta logits produjo
+error absoluto máximo, medio y relativo máximo `0.0`. La comparación también fue
+exacta en la salida de los Transformers, la normalización final y la salida de
+`lm_head/MatMul`.
+
+Para preservar esos resultados, los pesos externos de los Transformers se usan
+desde el archivo existente mediante un hardlink local dentro del directorio del
+candidato. Los pesos finales se guardan como archivos externos locales. Cargar y
+volver a serializar todos los pesos externos produjo una divergencia FP32 y no se
+debe repetir ese método.
+
+## Integración, calibración y límites
+
+El parser aprobado demuestra que el subgrafo del encoder es traducible por el
+DFC; todavía no demuestra cuantización, generación de HEF, latencia ni
+inferencia en Raspberry Pi. El candidato actual del encoder recibe activaciones,
+no audio. El pipeline ONNX particionado hasta logits fue validado con error
+máximo `4.86850739e-4` y medio `1.49634570e-5`; el ONNX unido continúa
+terminando con `-9` en DFC, por lo que la partición es deliberada.
+
+Se prepararon 128 ventanas autorizadas de `mau-cr/mayan-voice` en `/content` y
+las activaciones para frontend, posicional, residual y encoder. No se guardaron
+audio, transcripciones ni identificadores en Git. Falta ejecutar y validar la
+cuantización/compilación de cada HEF. Ver el registro detallado en
+[`RESULTADOS-2026-09-18.md`](RESULTADOS-2026-09-18.md).
+
+Las formas estáticas fijan el tamaño de la ventana, no el contenido del audio. La aplicación podrá rellenar audios cortos y segmentar audios largos en ventanas de aproximadamente cuatro segundos.
+
+## Pendientes inmediatos
+
+1. Cuantizar/compilar frontend con audio real de calibración.
+2. Cuantizar/compilar posicional, residual y encoder con sus activaciones.
+3. Validar interfaces cuantizadas e integrar HailoRT en Raspberry Pi.
+4. Ejecutar CTC/KenLM en CPU con audio autorizado y medir WER, latencia y RTF.
+
+El decoder CTC y KenLM se mantienen fuera de Hailo en esta fase; no deben confundirse con el LLM conversacional de Jolkan-Baalam.
