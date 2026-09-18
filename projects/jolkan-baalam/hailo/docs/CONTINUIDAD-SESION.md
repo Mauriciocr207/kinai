@@ -1,6 +1,6 @@
 # Continuidad de sesión: ASR maya en Hailo-10H
 
-**Última actualización:** 2026-09-17
+**Última actualización:** 2026-09-18
 **Modelo:** `mau-cr/mayan_best_model`
 **Hardware objetivo:** Hailo-10H en Raspberry Pi 5
 
@@ -32,7 +32,7 @@ Evaluar si el ASR MMS adaptado a maya yucateco puede dividirse en subgrafos comp
 3. ONNX Runtime confirmó equivalencia del extractor: salida `(1,199,38)`, error máximo aproximado `1.89e-4` y error medio `9.61e-6`.
 4. La convolución posicional usa `group=16`, kernel temporal 128 y padding `[0,64,0,64]` como Conv2D.
 5. Sus pesos `weight_norm` se materializaron como initializer estático. La comparación dinámica/estática produjo error máximo `4.70e-5` y error medio `2.11e-6`.
-6. El extractor Conv2D y el extractor más proyección pasan el parser de forma aislada. La convolución posicional estática aislada todavía bloquea DFC: la variante agrupada termina con `-9`; una descomposición de 16 Conv2D llega al diagnóstico de layouts incompatibles en la suma residual.
+6. El extractor Conv2D y el extractor más proyección pasan el parser de forma aislada. La posicional compatible es el bloque histórico sin `Transpose`: entrada y salida `[1,1280,199]`, `Reshape → Conv2D → Reshape3D → Slice → GELU`. También pasa una suma residual aislada con dos entradas de ese layout.
 
 ### Encoder y logits CTC
 
@@ -67,24 +67,28 @@ candidato. Los pesos finales se guardan como archivos externos locales. Cargar y
 volver a serializar todos los pesos externos produjo una divergencia FP32 y no se
 debe repetir ese método.
 
-## Limitaciones
+## Integración, calibración y límites
 
 El parser aprobado demuestra que el subgrafo del encoder es traducible por el
 DFC; todavía no demuestra cuantización, generación de HEF, latencia ni
 inferencia en Raspberry Pi. El candidato actual del encoder recibe activaciones,
-no audio. Aunque existe un candidato audio→logits con equivalencia FP32 (error
-máximo aproximado `4.87e-4`), su parseo integrado termina con `-9`.
+no audio. El pipeline ONNX particionado hasta logits fue validado con error
+máximo `4.86850739e-4` y medio `1.49634570e-5`; el ONNX unido continúa
+terminando con `-9` en DFC, por lo que la partición es deliberada.
+
+Se prepararon 128 ventanas autorizadas de `mau-cr/mayan-voice` en `/content` y
+las activaciones para frontend, posicional, residual y encoder. No se guardaron
+audio, transcripciones ni identificadores en Git. Falta ejecutar y validar la
+cuantización/compilación de cada HEF. Ver el registro detallado en
+[`RESULTADOS-2026-09-18.md`](RESULTADOS-2026-09-18.md).
 
 Las formas estáticas fijan el tamaño de la ventana, no el contenido del audio. La aplicación podrá rellenar audios cortos y segmentar audios largos en ventanas de aproximadamente cuatro segundos.
 
 ## Pendientes inmediatos
 
-1. Reescribir la suma residual de la convolución posicional para que ambas ramas
-   usen el mismo layout físico en Hailo y volver a parsearla aislada.
-2. Integrar la versión resuelta delante de `mayan_encoder48_logits`.
-3. Definir la partición CPU/Hailo si esa operación no resulta traducible.
-4. Preparar activaciones de calibración autorizadas; después cuantizar y compilar
-   a HEF.
-5. Medir inferencia en Raspberry Pi: controlador, HailoRT, latencia, RTF y memoria.
+1. Cuantizar/compilar frontend con audio real de calibración.
+2. Cuantizar/compilar posicional, residual y encoder con sus activaciones.
+3. Validar interfaces cuantizadas e integrar HailoRT en Raspberry Pi.
+4. Ejecutar CTC/KenLM en CPU con audio autorizado y medir WER, latencia y RTF.
 
 El decoder CTC y KenLM se mantienen fuera de Hailo en esta fase; no deben confundirse con el LLM conversacional de Jolkan-Baalam.

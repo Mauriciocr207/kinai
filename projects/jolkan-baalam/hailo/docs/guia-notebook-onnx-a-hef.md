@@ -38,7 +38,7 @@ Cada etapa debe distinguir tres resultados distintos:
 
 Que una etapa pase no implica que las siguientes estén resueltas.
 
-## Estado documentado al 2026-09-16
+## Estado documentado al 2026-09-18
 
 - El parser original falla en el `Unsqueeze` del extractor.
 - El extractor Conv1D fue representado como `Reshape → Conv2D → Reshape` y
@@ -58,9 +58,14 @@ Que una etapa pase no implica que las siguientes estén resueltas.
   final y `lm_head`, con salida `[1,199,38]` y equivalencia FP32 exacta contra
   el subgrafo original para la entrada experimental.
 
-Estos resultados todavía no son un HEF ni una prueba de inferencia. Falta
-integrar el frontend de audio, seguido de cuantización,
-generación de HEF, HailoRT, WER, latencia, RTF y Raspberry Pi.
+El pipeline ONNX particionado completo llega a logits con error máximo
+`4.86850739e-4`; las subredes son frontend, posicional canal-primero, suma
+residual canal-primero y encoder48→logits. El ONNX unido termina con `-9` en
+DFC, por lo que los cambios de layout se manejan entre subredes. Se prepararon
+128 ventanas autorizadas de calibración de `mau-cr/mayan-voice` en `/content`.
+
+Estos resultados todavía no son un HEF ni una prueba de inferencia. El registro
+detallado está en [`RESULTADOS-2026-09-18.md`](RESULTADOS-2026-09-18.md).
 
 ## Registro de cada sesión
 

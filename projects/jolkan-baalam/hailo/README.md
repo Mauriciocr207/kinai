@@ -19,7 +19,7 @@ La compilación se realiza en x86_64/Google Colab. La Raspberry Pi se incorporar
 - Notebook documental: [`notebooks/compile_mayan_asr_hailo_documentacion.ipynb`](notebooks/compile_mayan_asr_hailo_documentacion.ipynb).
 - Guía para leer y continuar el registro: [`docs/guia-notebook-onnx-a-hef.md`](docs/guia-notebook-onnx-a-hef.md).
 
-## Estado actual — 2026-09-17
+## Estado actual — 2026-09-18
 
 El DFC 5.4.0 acepta el frontend convertido a Conv2D, la convolución posicional con pesos estáticos y el Transformer 0 completo. El Transformer probado incluye atención, FFN/GELU, residuales y adapter YUA.
 
@@ -40,11 +40,13 @@ Las conversiones se realizan sobre copias temporales. El ONNX original no se sob
 - Validación numérica FP32 del Transformer 0: formas `(1,199,1280)` en referencia y candidato, con errores absoluto y relativo máximos `0.0`.
 - Parser aprobado para los 48 Transformers encadenados.
 - Candidato `encoder48→logits` validado en FP32: desde `[1,199,1280]` hasta logits `[1,199,38]`, con error absoluto y relativo máximos `0.0` frente al subgrafo original.
-- El extractor Conv2D y el extractor más proyección pasan el parser por separado. El recorrido completo audio→logits conserva FP32 (error máximo aproximado `4.87e-4`), pero el parser termina por memoria al integrarlo.
-- La convolución posicional estática aislada sigue siendo el bloqueo: la variante agrupada termina con `-9`; al descomponer sus 16 grupos, DFC llega a un error explícito de layouts incompatibles en la suma residual.
+- El extractor Conv2D y el extractor más proyección pasan el parser por separado. El recorrido completo audio→logits conserva FP32 (error máximo aproximado `4.87e-4`), pero un único grafo DFC termina con `-9`.
+- La posicional compatible se ejecuta como subred independiente en layout canal-primero `[1,1280,199]`: `Reshape → Conv2D → Reshape3D → Slice → GELU`, sin los `Transpose` de interfaz. Pasa el parser, al igual que la suma residual con dos entradas en ese mismo layout.
+- El pipeline ONNX particionado `frontend → posicional → residual → encoder48→logits` fue validado hasta logits con error máximo `4.86850739e-4` y medio `1.49634570e-5` frente al ONNX original.
+- Se prepararon 128 ventanas autorizadas de calibración desde `mau-cr/mayan-voice`, en `/content` y sin guardar texto ni identificadores. La optimización del frontend terminó, pero la asignación DFC falló con `BackendAllocatorException: buffers key conv1_ws doesn't exist`; aún no hay HEF.
 
 Estos son resultados de parseo y equivalencia de candidatos. No son todavía métricas de sistema: faltan HEF, cuantización, WER, latencia, RTF y prueba en Raspberry Pi.
 
 ## Próximo paso
 
-Resolver el layout de la suma residual de la convolución posicional y volver a validar su parseo. Solo después se integrará con `encoder48→logits`, antes de cuantizar.
+Reintentar la compilación del frontend con calibración/configuración reforzada; si falla igual, dividirlo en dos bloques antes de continuar con las demás subredes.

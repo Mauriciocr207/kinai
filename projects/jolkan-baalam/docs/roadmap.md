@@ -1,13 +1,13 @@
 # Roadmap de Jolkan-Baalam
 
-Última revisión: 2026-09-16.
+Última revisión: 2026-09-18.
 
 ## Etapas y criterios de terminado
 
 | Etapa | Resultado esperado | Estado |
 |---|---|---|
 | Organización | Directorio del prototipo, responsabilidades y rutas documentadas | En curso |
-| ASR en Hailo | Grafo traducible, HEF y equivalencia frente al modelo de referencia | Experimental; encoder de 48 Transformers hasta logits parseado y validado; convolución posicional aún bloquea el frontend |
+| ASR en Hailo | Grafo traducible, HEF y equivalencia frente al modelo de referencia | Experimental; pipeline ONNX particionado validado; primera compilación del frontend falla en allocator DFC |
 | Raspberry Pi | PCIe, controlador, inferencia y métricas comprobadas localmente | Pendiente |
 | Prototipo 3D | Diseño, impresión y montaje documentados | Pendiente |
 | Asistente integrado | Audio → ASR → LLM → TTS con reparto de ejecución explícito | Pendiente |
@@ -22,8 +22,8 @@
 
 ## Próximos pasos
 
-1. Resolver el layout de la suma residual en la convolución posicional y validar su parseo.
-2. Integrar el frontend de audio con el encoder de 48 Transformers y la cabeza CTC.
-3. Definir el reparto CPU/Hailo para la decodificación CTC y KenLM.
-4. Solo después ejecutar calibración, cuantización, HEF y pruebas controladas en la Raspberry Pi.
+1. Reintentar el frontend con calibración/configuración reforzada; si persiste, dividirlo en dos bloques.
+2. Repetir para posicional, suma residual y encoder48→logits; validar interfaces cuantizadas.
+3. Implementar el encadenamiento HailoRT y medir la ruta hasta logits en Raspberry Pi.
+4. Añadir CTC/KenLM en CPU y medir calidad, latencia y RTF.
 5. Levantar los requisitos físicos de la carcasa antes de diseñar el prototipo 3D.
