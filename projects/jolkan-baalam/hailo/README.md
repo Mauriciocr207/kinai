@@ -1,4 +1,4 @@
-﻿# EjecuciÃ³n del ASR de Jolkan-Baalam en Hailo-10H
+# EjecuciÃ³n del ASR de Jolkan-Baalam en Hailo-10H
 
 Esta carpeta documenta la evaluaciÃ³n del ASR maya `mau-cr/mayan_best_model` para el prototipo Jolkan-Baalam. El objetivo actual es investigar la compatibilidad del grafo con Hailo-10H; todavÃ­a no es una integraciÃ³n completa del asistente.
 
@@ -52,4 +52,3 @@ Estos son resultados de parseo y equivalencia de candidatos. No son todavÃ­a m
 ## PrÃ³ximo paso
 
 Reintentar la compilaciÃ³n del frontend con calibraciÃ³n/configuraciÃ³n reforzada; si falla igual, dividirlo en dos bloques antes de continuar con las demÃ¡s subredes.
-
