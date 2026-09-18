@@ -18,6 +18,7 @@ La compilación se realiza en x86_64/Google Colab. La Raspberry Pi se incorporar
 - Notebook organizada: `compile_mayan_asr_hailo_organizada.ipynb` en `thesis-mayan-ai/notebooks/onnx_hailo/` dentro de Drive.
 - Notebook documental: [`notebooks/compile_mayan_asr_hailo_documentacion.ipynb`](notebooks/compile_mayan_asr_hailo_documentacion.ipynb).
 - Guía para leer y continuar el registro: [`docs/guia-notebook-onnx-a-hef.md`](docs/guia-notebook-onnx-a-hef.md).
+- Plan acotado para obtener el primer HEF: [`docs/plan-ejecucion-hef-2026-09-18.md`](docs/plan-ejecucion-hef-2026-09-18.md).
 
 ## Estado actual — 2026-09-18
 
