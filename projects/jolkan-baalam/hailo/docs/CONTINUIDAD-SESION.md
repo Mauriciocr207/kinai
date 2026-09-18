@@ -1,6 +1,6 @@
 # Continuidad de sesión: ASR maya en Hailo-10H
 
-**Última actualización:** 2026-09-16
+**Última actualización:** 2026-09-17
 **Modelo:** `mau-cr/mayan_best_model`
 **Hardware objetivo:** Hailo-10H en Raspberry Pi 5
 
@@ -32,9 +32,9 @@ Evaluar si el ASR MMS adaptado a maya yucateco puede dividirse en subgrafos comp
 3. ONNX Runtime confirmó equivalencia del extractor: salida `(1,199,38)`, error máximo aproximado `1.89e-4` y error medio `9.61e-6`.
 4. La convolución posicional usa `group=16`, kernel temporal 128 y padding `[0,64,0,64]` como Conv2D.
 5. Sus pesos `weight_norm` se materializaron como initializer estático. La comparación dinámica/estática produjo error máximo `4.70e-5` y error medio `2.11e-6`.
-6. El parser acepta la convolución posicional en el subgrafo `Reshape → Conv2D → Reshape3D → Slice → activación`, evitando el `Transpose` 3D que provocaba un fallo por consumo de memoria.
+6. El extractor Conv2D y el extractor más proyección pasan el parser de forma aislada. La convolución posicional estática aislada todavía bloquea DFC: la variante agrupada termina con `-9`; una descomposición de 16 Conv2D llega al diagnóstico de layouts incompatibles en la suma residual.
 
-### Transformer 0
+### Encoder y logits CTC
 
 Hailo aceptó por separado y después integrado en un único candidato:
 
@@ -43,20 +43,48 @@ LayerNorm → atención Q/K/V → Softmax y MatMul → out_proj y residual
 → FFN/GELU y residual → adapter YUA y residual
 ```
 
-El candidato `/content/mayan_transformer0_completo/model.onnx` pasó el parser con entrada y salida `[1,199,1280]`.
+El candidato del Transformer 0 pasó el parser y la equivalencia FP32 exacta.
+
+Después, el candidato acumulativo de los 48 Transformers pasó el parser DFC con
+entrada `[1,199,1280]` y salida en
+`/wav2vec2/encoder/layers.47/Add_2`. La traducción tardó aproximadamente 72.57
+segundos.
+
+El candidato `/content/mayan_encoder48_logits/model.onnx` añade al final:
+
+```text
+LayerNormalization final → lm_head/MatMul → lm_head/Add → logits [1,199,38]
+```
+
+La validación FP32 del candidato completo desde activaciones hasta logits produjo
+error absoluto máximo, medio y relativo máximo `0.0`. La comparación también fue
+exacta en la salida de los Transformers, la normalización final y la salida de
+`lm_head/MatMul`.
+
+Para preservar esos resultados, los pesos externos de los Transformers se usan
+desde el archivo existente mediante un hardlink local dentro del directorio del
+candidato. Los pesos finales se guardan como archivos externos locales. Cargar y
+volver a serializar todos los pesos externos produjo una divergencia FP32 y no se
+debe repetir ese método.
 
 ## Limitaciones
 
-El parser aprobado demuestra que el subgrafo es traducible por el DFC; todavía no demuestra cuantización, generación de HEF, equivalencia numérica del bloque completo, latencia ni inferencia en Raspberry Pi.
+El parser aprobado demuestra que el subgrafo del encoder es traducible por el
+DFC; todavía no demuestra cuantización, generación de HEF, latencia ni
+inferencia en Raspberry Pi. El candidato actual del encoder recibe activaciones,
+no audio. Aunque existe un candidato audio→logits con equivalencia FP32 (error
+máximo aproximado `4.87e-4`), su parseo integrado termina con `-9`.
 
 Las formas estáticas fijan el tamaño de la ventana, no el contenido del audio. La aplicación podrá rellenar audios cortos y segmentar audios largos en ventanas de aproximadamente cuatro segundos.
 
 ## Pendientes inmediatos
 
-1. Validar numéricamente el Transformer 0 completo frente al grafo original.
-2. Intentar encadenar más bloques Transformer, vigilando el consumo de RAM del DFC.
-3. Integrar la salida CTC y decidir qué parte permanece en CPU.
-4. Ejecutar calibración, cuantización y compilación a HEF solamente después de obtener un grafo funcional.
+1. Reescribir la suma residual de la convolución posicional para que ambas ramas
+   usen el mismo layout físico en Hailo y volver a parsearla aislada.
+2. Integrar la versión resuelta delante de `mayan_encoder48_logits`.
+3. Definir la partición CPU/Hailo si esa operación no resulta traducible.
+4. Preparar activaciones de calibración autorizadas; después cuantizar y compilar
+   a HEF.
 5. Medir inferencia en Raspberry Pi: controlador, HailoRT, latencia, RTF y memoria.
 
 El decoder CTC y KenLM se mantienen fuera de Hailo en esta fase; no deben confundirse con el LLM conversacional de Jolkan-Baalam.

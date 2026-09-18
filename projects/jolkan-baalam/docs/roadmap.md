@@ -7,7 +7,7 @@
 | Etapa | Resultado esperado | Estado |
 |---|---|---|
 | Organización | Directorio del prototipo, responsabilidades y rutas documentadas | En curso |
-| ASR en Hailo | Grafo traducible, HEF y equivalencia frente al modelo de referencia | Experimental; Conv2D y Transformer 0 parseados |
+| ASR en Hailo | Grafo traducible, HEF y equivalencia frente al modelo de referencia | Experimental; encoder de 48 Transformers hasta logits parseado y validado; convolución posicional aún bloquea el frontend |
 | Raspberry Pi | PCIe, controlador, inferencia y métricas comprobadas localmente | Pendiente |
 | Prototipo 3D | Diseño, impresión y montaje documentados | Pendiente |
 | Asistente integrado | Audio → ASR → LLM → TTS con reparto de ejecución explícito | Pendiente |
@@ -22,8 +22,8 @@
 
 ## Próximos pasos
 
-1. Validar numéricamente el Transformer 0 completo frente al modelo original.
-2. Intentar encadenar más bloques Transformer y documentar los límites de memoria.
-3. Integrar la salida CTC y decidir el reparto CPU/Hailo.
+1. Resolver el layout de la suma residual en la convolución posicional y validar su parseo.
+2. Integrar el frontend de audio con el encoder de 48 Transformers y la cabeza CTC.
+3. Definir el reparto CPU/Hailo para la decodificación CTC y KenLM.
 4. Solo después ejecutar calibración, cuantización, HEF y pruebas controladas en la Raspberry Pi.
 5. Levantar los requisitos físicos de la carcasa antes de diseñar el prototipo 3D.
