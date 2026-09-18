@@ -7,10 +7,13 @@
 
 ## Decisión
 
-El siguiente experimento es un reintento controlado de compilación del frontend
-`audio [1,64000] → [1,199,1280]`. No se modifica el ONNX original ni se vuelve a
-integrar el grafo completo. Si el mismo error del allocator persiste, el
-frontend se divide en dos subredes: Conv1--Conv4 y Conv5--Conv7 más proyección.
+La continuación reproducible reconstruye el entorno DFC y los candidatos desde
+el ONNX original antes de compilar las cuatro subredes: frontend, posicional,
+residual y `encoder48→logits`. No se modifica el ONNX original ni se vuelve a
+integrar el grafo completo. El primer punto de decisión es un reintento
+controlado del frontend `audio [1,64000] → [1,199,1280]`; si el mismo error del
+allocator persiste, ese frontend se divide en Conv1--Conv4 y Conv5--Conv7 más
+proyección.
 
 Esta decisión parte de resultados registrados el 2026-09-18: el pipeline ONNX
 particionado conserva FP32 hasta logits, el parser acepta las subredes, y la
@@ -33,6 +36,16 @@ HEF, ejecución HailoRT ni mediciones locales de sistema.
    de calidad: es una variante de asignación.
 5. Si se genera un HEF, comparar la salida cuantizada/emulada con la referencia
    ONNX antes de mover el artefacto a la Pi.
+
+## Notebook de continuidad reproducible
+
+`thesis-mayan-ai/notebooks/onnx_hailo/continuar_frontend_a_hef.ipynb` contiene
+un recorrido limpio, sin las fases exploratorias históricas: instala/verifica
+DFC 5.4.0, comprueba el ONNX con external data, reconstruye Conv2D, posicional
+estática y encoder48→logits, crea las cuatro subredes, valida parsers y
+equivalencia FP32, prepara activaciones autorizadas y compila cada HEF. Los
+artefactos temporales van a `/content`; los HEF y logs se guardan fuera de Git
+en `models/hailo/` de Drive.
 
 ## Criterio de bifurcación
 
